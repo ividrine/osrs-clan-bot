@@ -1,0 +1,19 @@
+{
+  "name": "osrs-clan-bot",
+  "version": "1.0.0",
+  "description": "discord bot that displays in game clan chat notifications from the runelite plugin project",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Isaac Vidrine",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.1.2",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "cors": "^2.8.5"
+  }
+}
