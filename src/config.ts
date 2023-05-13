@@ -1,7 +1,16 @@
+import { PermissionFlagsBits } from 'discord.js';
+
 export default {
   privateKey: process.env.PRIVATE_KEY || 'supersecretkey',
   algorithm: process.env.ALGORITHM || 'HS256',
+  requiredPermissions: [
+    PermissionFlagsBits.ManageMessages,
+    PermissionFlagsBits.EmbedLinks,
+    PermissionFlagsBits.AttachFiles,
+    PermissionFlagsBits.UseApplicationCommands
+  ],
   visuals: {
+    gold: 0xf5cf25,
     purple: 0x7914a8,
     blue: 0x2980b9,
     red: 0xcc4242,

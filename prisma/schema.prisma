@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model NotificationPreferences {
+  guildId   String   @db.VarChar(256)
+  type      String   @db.VarChar(64)
+  channelId String?  @db.VarChar(256)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+
+  // Constraints
+  @@id([guildId, type])
+}
+
+model IssuedTokens {
+  guildId   String   @db.VarChar(256)
+  userId    String   @db.VarChar(256)
+  token     String   @db.VarChar(512)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+
+  // Constraints
+  @@id([guildId, userId])
+}

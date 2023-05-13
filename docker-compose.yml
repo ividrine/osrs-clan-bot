@@ -1,0 +1,44 @@
+version: '3'
+services:
+  db:
+    container_name: db
+    image: postgres:14
+    env_file:
+      - ./.env
+    expose:
+      - '${POSTGRES_PORT}'
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - '${PGADMIN_PORT}:80'
+    depends_on:
+      - db
+    logging:
+      driver: none
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    expose:
+      - '${PORT}'
+    ports:
+      - '${PORT}:${PORT}'
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - ./:/app
+      - /app/node_modules/
+    command: './wait-for-it.sh -t 30 ${DB_HOST}:${POSTGRES_PORT} -- npm run watch'
+volumes:
+  pgdata:

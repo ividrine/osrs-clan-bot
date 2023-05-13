@@ -5,15 +5,18 @@ import {
   Embed,
   Message,
   ChannelType,
-  Client
+  Client,
+  GuildMember
 } from 'discord.js';
 import config from '../config';
 
-import { BaseCommand, CommandError } from '../util/commands';
+import { BaseCommand, CommandError } from '../models/commands';
 
 import TokenCommand from './token';
+import PreferenceCommand from './preference';
+import { isAdmin } from '../models/discord';
 
-export const COMMANDS: BaseCommand[] = [TokenCommand];
+export const COMMANDS: BaseCommand[] = [TokenCommand, PreferenceCommand];
 
 export async function onMessage(message: Message) {
   if (message.channel.type != ChannelType.DM) return;
@@ -30,6 +33,12 @@ export async function onInteraction(interaction: Interaction) {
     const targetCommand = COMMANDS.find(cmd => cmd.slashCommand.name === commandName);
     if (!targetCommand) {
       throw new Error(`Error: Command not implemented: ${commandName}`);
+    }
+
+    if (targetCommand.requiresAdmin && !isAdmin(interaction.member as GuildMember)) {
+      const error = new CommandError('That command requires Admin permissions.');
+      await interaction.followUp({ embeds: [buildErrorEmbed(error)] });
+      return;
     }
 
     await targetCommand.execute(interaction);

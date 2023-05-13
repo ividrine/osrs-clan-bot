@@ -1,7 +1,8 @@
-import { Request as JWTRequest } from 'express-jwt';
+import { GuildMember, MessageCreateOptions } from 'discord.js';
 
-enum NOTIFICATION_TYPE {
+export enum NOTIFICATION_TYPE {
   BOSSDROP = 'BOSSDROP',
+  RAIDLOOT = 'RAIDLOOT',
   CLUEITEM = 'CLUEITEM',
   COFFERDEPOSIT = 'COFFERDEPOSIT',
   COFFERWITHDRAW = 'COFFERWITHDRAW',
@@ -13,33 +14,40 @@ enum NOTIFICATION_TYPE {
   PERSONALBEST = 'PERSONALBEST',
   PKLOSE = 'PKLOSE',
   PKWIN = 'PKWIN',
-  QUESTCOMPLETION = 'QUESTCOMPLETION',
-  TEST = 'TEST'
+  QUESTCOMPLETION = 'QUESTCOMPLETION'
 }
 
-const titles = {
+export const NotificationNames = {
   [NOTIFICATION_TYPE.BOSSDROP]: 'Drop',
+  [NOTIFICATION_TYPE.RAIDLOOT]: 'Raid Loot',
   [NOTIFICATION_TYPE.CLUEITEM]: 'Clue Scroll Item',
-  [NOTIFICATION_TYPE.COFFERDEPOSIT]: 'Coffer',
-  [NOTIFICATION_TYPE.COFFERWITHDRAW]: 'Coffer',
+  [NOTIFICATION_TYPE.COFFERDEPOSIT]: 'Coffer Deposit',
+  [NOTIFICATION_TYPE.COFFERWITHDRAW]: 'Coffer Withdraw',
   [NOTIFICATION_TYPE.COLLECTIONLOG]: 'Collection Log',
   [NOTIFICATION_TYPE.COMBATACHIEVEMENT]: 'Comabt Achievemnt',
   [NOTIFICATION_TYPE.DIARYCOMPLETION]: 'Diary',
   [NOTIFICATION_TYPE.HARDCOREDEATH]: 'Hardcore Death',
   [NOTIFICATION_TYPE.LEVELUP]: 'Level Up',
-  [NOTIFICATION_TYPE.PKLOSE]: 'You Lost',
-  [NOTIFICATION_TYPE.PKWIN]: 'You Won',
+  [NOTIFICATION_TYPE.PKLOSE]: 'PVP Death',
+  [NOTIFICATION_TYPE.PKWIN]: 'PVP Win',
   [NOTIFICATION_TYPE.PERSONALBEST]: 'Personal Best',
-  [NOTIFICATION_TYPE.QUESTCOMPLETION]: 'Quest Complete',
-  [NOTIFICATION_TYPE.TEST]: 'Testing'
+  [NOTIFICATION_TYPE.QUESTCOMPLETION]: 'Quest Complete'
 };
 
-export class NotificationRequest {
+export interface DiscordNotification {
+  type: NOTIFICATION_TYPE;
+  title: string;
+  color: number;
+
+  buildMessage(
+    user: GuildMember,
+    data: NotificationRequest,
+    screenshot: Express.Multer.File | undefined
+  ): MessageCreateOptions;
+}
+
+export interface NotificationRequest {
   type: NOTIFICATION_TYPE;
   message: string;
   rsn: string;
-}
-
-export function getTitle(type: NOTIFICATION_TYPE) {
-  return titles[type];
 }

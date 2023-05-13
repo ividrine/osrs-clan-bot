@@ -5,8 +5,6 @@ import {
 } from '@discordjs/builders';
 import { Client, CommandInteraction, InteractionType } from 'discord.js';
 
-const DISCORD_TAG_REGEX = /<@!?(\d+)>/;
-
 export class CommandError extends Error {
   tip?: string;
 
