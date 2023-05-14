@@ -2,14 +2,14 @@ import { DiscordNotification, NOTIFICATION_TYPE, NotificationRequest } from '../
 import config from '../config';
 import { AttachmentBuilder, EmbedBuilder, GuildMember, MessageCreateOptions } from 'discord.js';
 
-class Drop implements DiscordNotification {
+class Raid implements DiscordNotification {
   type: NOTIFICATION_TYPE;
   title: string;
   color: number;
 
   constructor() {
-    this.type = NOTIFICATION_TYPE.BOSSDROP;
-    this.title = 'Boss Drop';
+    this.type = NOTIFICATION_TYPE.RAIDLOOT;
+    this.title = 'Raid Loot';
     this.color = config.visuals.gold;
   }
 
@@ -48,4 +48,4 @@ class Drop implements DiscordNotification {
   }
 }
 
-export default new Drop();
+export default new Raid();

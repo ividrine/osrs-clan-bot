@@ -16,7 +16,8 @@ import PersonalBest from './personal_best';
 import PVPDeath from './pvp_loss';
 import PVPWin from './pvp_win';
 import Quest from './quest_complete';
-import { getNotificationPreference, getToken } from '../services/prisma';
+import Raid from './raid';
+import { getNotificationPreference } from '../services/prisma';
 
 const notifications: DiscordNotification[] = [
   Clue,
@@ -31,7 +32,8 @@ const notifications: DiscordNotification[] = [
   PersonalBest,
   PVPDeath,
   PVPWin,
-  Quest
+  Quest,
+  Raid
 ];
 
 export async function onNotification(
