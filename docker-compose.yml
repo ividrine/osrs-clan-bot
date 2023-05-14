@@ -28,7 +28,7 @@ services:
     container_name: app
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     expose:
       - '${PORT}'
     ports:
