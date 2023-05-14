@@ -4,11 +4,17 @@
   "description": "discord bot that displays in game clan chat notifications from the runelite plugin project",
   "main": "dist/index.js",
   "scripts": {
+    "start": "node dist/index.js",
     "build": "rimraf ./dist && tsc",
+    "postinstall": "rimraf ./dist && tsc",
+    "prepare": "npx prisma generate && prisma migrate deploy",
     "dev": "docker-compose up --build",
     "dev:debug": "ts-node-dev --transpile-only --respawn --inspect=4321 --project tsconfig.json src/index.ts",
-    "prod": "prisma migrate deploy && node dist/index.js",
+    "prod": "npx prisma generate && prisma migrate deploy && node dist/index.js",
     "watch": "prisma migrate dev && ts-node-dev --poll --exit-child --respawn --transpile-only --ignore-watch node_modules src/index.ts"
+  },
+  "engines": {
+    "node": "18.16.0"
   },
   "author": "Isaac Vidrine",
   "license": "ISC",
