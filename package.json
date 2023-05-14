@@ -5,7 +5,6 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "build": "rimraf ./dist && tsc",
     "postinstall": "rimraf ./dist && tsc",
     "prepare": "npx prisma generate && prisma migrate deploy",
     "dev": "docker-compose up --build",
