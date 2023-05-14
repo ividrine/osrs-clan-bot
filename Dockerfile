@@ -12,4 +12,4 @@ RUN npm i
 COPY . .
 
 # Transpile the TypeScript code into JavaScript
-RUN npm run build
+RUN npm run postinstall
