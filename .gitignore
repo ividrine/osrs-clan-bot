@@ -6,6 +6,7 @@ node_modules
 
 # dotenv files
 .env
+.env.development
 
 # build
 dist
