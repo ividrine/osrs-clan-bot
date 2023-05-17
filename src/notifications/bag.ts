@@ -2,15 +2,15 @@ import { DiscordNotification, NOTIFICATION_TYPE, NotificationRequest } from '../
 import config from '../config';
 import { AttachmentBuilder, EmbedBuilder, GuildMember, MessageCreateOptions } from 'discord.js';
 
-class CofferWithdraw implements DiscordNotification {
+class Bag implements DiscordNotification {
   type: NOTIFICATION_TYPE;
   title: string;
   color: number;
 
   constructor() {
-    this.type = NOTIFICATION_TYPE.COFFERWITHDRAW;
-    this.title = 'Coffer Withdraw';
-    this.color = config.visuals.orange;
+    this.type = NOTIFICATION_TYPE.BARBARIAN_ASSAULT_GAMBLE;
+    this.title = 'Barbarian Assault Gamble';
+    this.color = config.visuals.purple;
   }
 
   buildMessage(
@@ -21,16 +21,22 @@ class CofferWithdraw implements DiscordNotification {
     const files = [new AttachmentBuilder('static/img/helm.jpg')];
 
     const embed = new EmbedBuilder()
-      .setTitle(this.title)
+      .setTitle(`${this.title}`)
       .setAuthor({
-        name: data.rsn,
-        iconURL: `attachment://helm.jpg`,
-        url: `https://wiseoldman.net/players/${data.rsn}`
+        name: user.displayName,
+        iconURL: `attachment://helm.jpg`
       })
       .setColor(this.color)
       .setFields({ name: '\u200B', value: `<@${user.id}>` })
-      .setDescription(data.message)
-      .setTimestamp();
+      .setDescription(data.content)
+      .setTimestamp()
+      .setFooter({ text: 'Legend' });
+
+    if (screenshot) {
+      const attachment = new AttachmentBuilder(screenshot.buffer, { name: screenshot.originalname });
+      files.push(attachment);
+      embed.setImage(`attachment://${screenshot.originalname}`);
+    }
 
     const msg: MessageCreateOptions = {
       embeds: [embed],
@@ -41,4 +47,4 @@ class CofferWithdraw implements DiscordNotification {
   }
 }
 
-export default new CofferWithdraw();
+export default new Bag();

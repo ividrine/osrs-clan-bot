@@ -12,10 +12,19 @@ const upload = multer({ storage: storage });
 
 const port = process.env.PORT || 3000;
 
-const isRevoked = async (req, token) => {
-  var tokenStr = req.headers.authorization.split(' ')[1];
-  const record = await getTokenByValue(tokenStr);
+const isRevoked = async req => {
+  const token = getToken(req);
+  const record = await getTokenByValue(token);
   return record == null;
+};
+
+const getToken = req => {
+  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    return req.headers.authorization.split(' ')[1];
+  } else if (req.query && req.query.token) {
+    return req.query.token;
+  }
+  return null;
 };
 
 export function init(client: Client) {
@@ -30,6 +39,7 @@ export function init(client: Client) {
     expressjwt({
       secret: config.privateKey,
       algorithms: ['HS256'],
+      getToken: getToken,
       isRevoked: isRevoked
     })
   );
@@ -43,7 +53,7 @@ export function init(client: Client) {
 
   app.post(
     '/api/notifications',
-    upload.single('screenshot'),
+    upload.single('file'),
     async (req: JWTRequest & Express.Multer.File, res: express.Response) => {
       try {
         await onNotification(client, req, res);

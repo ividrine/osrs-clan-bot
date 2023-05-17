@@ -2,15 +2,15 @@ import { DiscordNotification, NOTIFICATION_TYPE, NotificationRequest } from '../
 import config from '../config';
 import { AttachmentBuilder, EmbedBuilder, GuildMember, MessageCreateOptions } from 'discord.js';
 
-class CollectionLog implements DiscordNotification {
+class Level implements DiscordNotification {
   type: NOTIFICATION_TYPE;
   title: string;
   color: number;
 
   constructor() {
-    this.type = NOTIFICATION_TYPE.COLLECTIONLOG;
-    this.title = 'Collection Log Item';
-    this.color = config.visuals.purple;
+    this.type = NOTIFICATION_TYPE.LEVEL;
+    this.title = 'Level Up';
+    this.color = config.visuals.green;
   }
 
   buildMessage(
@@ -23,15 +23,13 @@ class CollectionLog implements DiscordNotification {
     const embed = new EmbedBuilder()
       .setTitle(this.title)
       .setAuthor({
-        name: data.rsn,
-        iconURL: `attachment://helm.jpg`,
-        url: `https://wiseoldman.net/players/${data.rsn}`
+        name: user.displayName,
+        iconURL: `attachment://helm.jpg`
       })
       .setColor(this.color)
       .setFields({ name: '\u200B', value: `<@${user.id}>` })
-      .setDescription(data.message)
-      .setTimestamp()
-      .setFooter({ text: 'Legend' });
+      .setDescription(data.content)
+      .setTimestamp();
 
     if (screenshot) {
       const attachment = new AttachmentBuilder(screenshot.buffer, { name: screenshot.originalname });
@@ -48,4 +46,4 @@ class CollectionLog implements DiscordNotification {
   }
 }
 
-export default new CollectionLog();
+export default new Level();

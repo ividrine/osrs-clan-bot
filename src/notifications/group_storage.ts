@@ -2,15 +2,15 @@ import { DiscordNotification, NOTIFICATION_TYPE, NotificationRequest } from '../
 import config from '../config';
 import { AttachmentBuilder, EmbedBuilder, GuildMember, MessageCreateOptions } from 'discord.js';
 
-class CombatAchievement implements DiscordNotification {
+class GroupStorage implements DiscordNotification {
   type: NOTIFICATION_TYPE;
   title: string;
   color: number;
 
   constructor() {
-    this.type = NOTIFICATION_TYPE.COMBAT_ACHIEVEMENT;
-    this.title = 'Combat Achievements';
-    this.color = config.visuals.orange;
+    this.type = NOTIFICATION_TYPE.GROUP_STORAGE;
+    this.title = 'Group Storage';
+    this.color = config.visuals.gold;
   }
 
   buildMessage(
@@ -21,7 +21,7 @@ class CombatAchievement implements DiscordNotification {
     const files = [new AttachmentBuilder('static/img/helm.jpg')];
 
     const embed = new EmbedBuilder()
-      .setTitle(this.title)
+      .setTitle(`${this.title}`)
       .setAuthor({
         name: user.displayName,
         iconURL: `attachment://helm.jpg`
@@ -29,7 +29,8 @@ class CombatAchievement implements DiscordNotification {
       .setColor(this.color)
       .setFields({ name: '\u200B', value: `<@${user.id}>` })
       .setDescription(data.content)
-      .setTimestamp();
+      .setTimestamp()
+      .setFooter({ text: 'Legend' });
 
     if (screenshot) {
       const attachment = new AttachmentBuilder(screenshot.buffer, { name: screenshot.originalname });
@@ -46,4 +47,4 @@ class CombatAchievement implements DiscordNotification {
   }
 }
 
-export default new CombatAchievement();
+export default new GroupStorage();

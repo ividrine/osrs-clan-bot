@@ -8,7 +8,7 @@ import { getMissingPermissions, isChannelSendable } from '../models/discord';
 import { updateNotificationPreferences } from '../services/prisma';
 
 const CONFIG: CommandConfig = {
-  name: 'preference',
+  name: 'setpref',
   description: 'Set notfication preferences.',
   options: [
     {

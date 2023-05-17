@@ -2,15 +2,15 @@ import { DiscordNotification, NOTIFICATION_TYPE, NotificationRequest } from '../
 import config from '../config';
 import { AttachmentBuilder, EmbedBuilder, GuildMember, MessageCreateOptions } from 'discord.js';
 
-class PersonalBest implements DiscordNotification {
+class Coffer implements DiscordNotification {
   type: NOTIFICATION_TYPE;
   title: string;
   color: number;
 
   constructor() {
-    this.type = NOTIFICATION_TYPE.PERSONALBEST;
-    this.title = 'Personal Best';
-    this.color = config.visuals.green;
+    this.type = NOTIFICATION_TYPE.COFFER;
+    this.title = 'Clan Coffer';
+    this.color = config.visuals.orange;
   }
 
   buildMessage(
@@ -23,14 +23,14 @@ class PersonalBest implements DiscordNotification {
     const embed = new EmbedBuilder()
       .setTitle(this.title)
       .setAuthor({
-        name: data.rsn,
-        iconURL: `attachment://helm.jpg`,
-        url: `https://wiseoldman.net/players/${data.rsn}`
+        name: user.displayName,
+        iconURL: `attachment://helm.jpg`
       })
       .setColor(this.color)
+      .setDescription(data.content)
       .setFields({ name: '\u200B', value: `<@${user.id}>` })
-      .setDescription(data.message)
       .setTimestamp();
+
     const msg: MessageCreateOptions = {
       embeds: [embed],
       files: files
@@ -40,4 +40,4 @@ class PersonalBest implements DiscordNotification {
   }
 }
 
-export default new PersonalBest();
+export default new Coffer();

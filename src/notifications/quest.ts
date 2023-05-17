@@ -2,15 +2,15 @@ import { DiscordNotification, NOTIFICATION_TYPE, NotificationRequest } from '../
 import config from '../config';
 import { AttachmentBuilder, EmbedBuilder, GuildMember, MessageCreateOptions } from 'discord.js';
 
-class CofferDeposit implements DiscordNotification {
+class Quest implements DiscordNotification {
   type: NOTIFICATION_TYPE;
   title: string;
   color: number;
 
   constructor() {
-    this.type = NOTIFICATION_TYPE.COFFERDEPOSIT;
-    this.title = 'Coffer Deposit';
-    this.color = config.visuals.orange;
+    this.type = NOTIFICATION_TYPE.QUEST;
+    this.title = 'Quest Completion';
+    this.color = config.visuals.blue;
   }
 
   buildMessage(
@@ -23,14 +23,19 @@ class CofferDeposit implements DiscordNotification {
     const embed = new EmbedBuilder()
       .setTitle(this.title)
       .setAuthor({
-        name: data.rsn,
-        iconURL: `attachment://helm.jpg`,
-        url: `https://wiseoldman.net/players/${data.rsn}`
+        name: user.displayName,
+        iconURL: `attachment://helm.jpg`
       })
       .setColor(this.color)
-      .setDescription(data.message)
       .setFields({ name: '\u200B', value: `<@${user.id}>` })
+      .setDescription(data.content)
       .setTimestamp();
+
+    if (screenshot) {
+      const attachment = new AttachmentBuilder(screenshot.buffer, { name: screenshot.originalname });
+      files.push(attachment);
+      embed.setImage(`attachment://${screenshot.originalname}`);
+    }
 
     const msg: MessageCreateOptions = {
       embeds: [embed],
@@ -41,4 +46,4 @@ class CofferDeposit implements DiscordNotification {
   }
 }
 
-export default new CofferDeposit();
+export default new Quest();

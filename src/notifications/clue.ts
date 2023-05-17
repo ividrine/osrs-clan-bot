@@ -8,7 +8,7 @@ class Clue implements DiscordNotification {
   color: number;
 
   constructor() {
-    this.type = NOTIFICATION_TYPE.CLUEITEM;
+    this.type = NOTIFICATION_TYPE.CLUE;
     this.title = 'Clue Scroll Item';
     this.color = config.visuals.gold;
   }
@@ -23,13 +23,12 @@ class Clue implements DiscordNotification {
     const embed = new EmbedBuilder()
       .setTitle(`${this.title}`)
       .setAuthor({
-        name: data.rsn,
-        iconURL: `attachment://helm.jpg`,
-        url: `https://wiseoldman.net/players/${data.rsn}`
+        name: user.displayName,
+        iconURL: `attachment://helm.jpg`
       })
       .setColor(this.color)
       .setFields({ name: '\u200B', value: `<@${user.id}>` })
-      .setDescription(data.message)
+      .setDescription(data.content)
       .setTimestamp()
       .setFooter({ text: 'Legend' });
 

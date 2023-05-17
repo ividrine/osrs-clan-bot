@@ -2,15 +2,15 @@ import { DiscordNotification, NOTIFICATION_TYPE, NotificationRequest } from '../
 import config from '../config';
 import { AttachmentBuilder, EmbedBuilder, GuildMember, MessageCreateOptions } from 'discord.js';
 
-class CombatAchievement implements DiscordNotification {
+class PlayerKill implements DiscordNotification {
   type: NOTIFICATION_TYPE;
   title: string;
   color: number;
 
   constructor() {
-    this.type = NOTIFICATION_TYPE.COMBAT_ACHIEVEMENT;
-    this.title = 'Combat Achievements';
-    this.color = config.visuals.orange;
+    this.type = NOTIFICATION_TYPE.PLAYER_KILL;
+    this.title = 'PVP Death';
+    this.color = config.visuals.red;
   }
 
   buildMessage(
@@ -46,4 +46,4 @@ class CombatAchievement implements DiscordNotification {
   }
 }
 
-export default new CombatAchievement();
+export default new PlayerKill();

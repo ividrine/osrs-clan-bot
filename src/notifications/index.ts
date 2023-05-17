@@ -4,36 +4,41 @@ import express from 'express';
 import { findOpenChannel } from '../models/discord';
 import { DiscordNotification } from '../models/notification';
 import Clue from './clue';
-import CofferDeposit from './coffer_deposit';
-import CofferWithdraw from './coffer_withdraw';
-import CollectionLog from './collection_log';
+import Coffer from './coffer';
+import Collection from './collection';
 import CombatAchievement from './combat_achievement';
-import Diary from './diary';
-import Drop from './drop';
-import HardcoreDeath from './hardcore_death';
-import LevelUp from './levelup';
-import PersonalBest from './personal_best';
-import PVPDeath from './pvp_loss';
-import PVPWin from './pvp_win';
-import Quest from './quest_complete';
-import Raid from './raid';
+import AchievementDiary from './achievement_diary';
+import Loot from './loot';
+import Level from './level';
+import Death from './death';
+import PlayerKill from './player_kill';
+import Quest from './quest';
+import Slayer from './slayer';
+import Pet from './pet';
+import GroupStorage from './group_storage';
+import Bag from './bag';
+import KillCount from './kill_count';
+import SpeedRun from './speed_run';
+
 import { getNotificationPreference } from '../services/prisma';
 
 const notifications: DiscordNotification[] = [
   Clue,
-  CofferDeposit,
-  CofferWithdraw,
-  CollectionLog,
+  Coffer,
+  Collection,
   CombatAchievement,
-  Diary,
-  Drop,
-  HardcoreDeath,
-  LevelUp,
-  PersonalBest,
-  PVPDeath,
-  PVPWin,
+  AchievementDiary,
+  Loot,
+  Death,
+  Level,
+  PlayerKill,
   Quest,
-  Raid
+  Slayer,
+  Pet,
+  GroupStorage,
+  Bag,
+  KillCount,
+  SpeedRun
 ];
 
 export async function onNotification(
@@ -44,7 +49,7 @@ export async function onNotification(
   const server = client.guilds.cache.get(req.auth?.guildId);
   const user = await server?.members.fetch(req.auth?.id);
 
-  if (!server || !user || !req.body.type || !req.body.message) {
+  if (!server || !user || !req.body.type || !req.body.content) {
     return res.sendStatus(400);
   }
 

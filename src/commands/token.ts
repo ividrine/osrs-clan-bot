@@ -5,8 +5,8 @@ import config from '../config';
 import { issueToken } from '../services/prisma';
 
 const CONFIG: CommandConfig = {
-  name: 'token',
-  description: 'Generate a token for the runelite plugin. If one already exists it will be revoked.'
+  name: 'url',
+  description: 'Generate a webhook url for the Dink runelite plugin.'
 };
 
 class TokenCommand extends Command {
@@ -28,10 +28,10 @@ class TokenCommand extends Command {
 
     const response = new EmbedBuilder()
       .setColor(config.visuals.blue)
-      .setTitle('Access Token')
-      .setDescription(token)
+      .setTitle('Webhook Url')
+      .setDescription(`https://osrs-clan-bot.herokuapp.com/api/notifications?token=${token}`)
       .setFooter({
-        text: "Copy the above text and paste it into the runelite plugin. Please keep this safe and don't share it with anyone."
+        text: "Copy the above url and paste it into the 'Primary Webhook URLs' section of the Dink runelite plugin. Please keep this safe and don't share it with anyone."
       });
 
     await interaction.reply({ embeds: [response], ephemeral: true });

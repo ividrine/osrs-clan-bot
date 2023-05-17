@@ -2,15 +2,15 @@ import { DiscordNotification, NOTIFICATION_TYPE, NotificationRequest } from '../
 import config from '../config';
 import { AttachmentBuilder, EmbedBuilder, GuildMember, MessageCreateOptions } from 'discord.js';
 
-class Diary implements DiscordNotification {
+class Loot implements DiscordNotification {
   type: NOTIFICATION_TYPE;
   title: string;
   color: number;
 
   constructor() {
-    this.type = NOTIFICATION_TYPE.DIARYCOMPLETION;
-    this.title = 'Achievement Diaries';
-    this.color = config.visuals.green;
+    this.type = NOTIFICATION_TYPE.LOOT;
+    this.title = 'Boss Drop';
+    this.color = config.visuals.gold;
   }
 
   buildMessage(
@@ -23,14 +23,14 @@ class Diary implements DiscordNotification {
     const embed = new EmbedBuilder()
       .setTitle(this.title)
       .setAuthor({
-        name: data.rsn,
-        iconURL: `attachment://helm.jpg`,
-        url: `https://wiseoldman.net/players/${data.rsn}`
+        name: user.displayName,
+        iconURL: `attachment://helm.jpg`
       })
       .setColor(this.color)
       .setFields({ name: '\u200B', value: `<@${user.id}>` })
-      .setDescription(data.message)
-      .setTimestamp();
+      .setDescription(data.content)
+      .setTimestamp()
+      .setFooter({ text: 'Legend' });
 
     if (screenshot) {
       const attachment = new AttachmentBuilder(screenshot.buffer, { name: screenshot.originalname });
@@ -47,4 +47,4 @@ class Diary implements DiscordNotification {
   }
 }
 
-export default new Diary();
+export default new Loot();

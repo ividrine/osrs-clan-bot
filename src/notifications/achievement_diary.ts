@@ -2,15 +2,15 @@ import { DiscordNotification, NOTIFICATION_TYPE, NotificationRequest } from '../
 import config from '../config';
 import { AttachmentBuilder, EmbedBuilder, GuildMember, MessageCreateOptions } from 'discord.js';
 
-class PVPWin implements DiscordNotification {
+class AchievementDiary implements DiscordNotification {
   type: NOTIFICATION_TYPE;
   title: string;
   color: number;
 
   constructor() {
-    this.type = NOTIFICATION_TYPE.PKWIN;
-    this.title = 'PVP Win';
-    this.color = config.visuals.gold;
+    this.type = NOTIFICATION_TYPE.ACHIEVEMENT_DIARY;
+    this.title = 'Achievement Diaries';
+    this.color = config.visuals.green;
   }
 
   buildMessage(
@@ -23,15 +23,13 @@ class PVPWin implements DiscordNotification {
     const embed = new EmbedBuilder()
       .setTitle(this.title)
       .setAuthor({
-        name: data.rsn,
-        iconURL: `attachment://helm.jpg`,
-        url: `https://wiseoldman.net/players/${data.rsn}`
+        name: user.displayName,
+        iconURL: `attachment://helm.jpg`
       })
       .setColor(this.color)
       .setFields({ name: '\u200B', value: `<@${user.id}>` })
-      .setDescription(data.message)
-      .setTimestamp()
-      .setFooter({ text: 'Legend' });
+      .setDescription(data.content)
+      .setTimestamp();
 
     if (screenshot) {
       const attachment = new AttachmentBuilder(screenshot.buffer, { name: screenshot.originalname });
@@ -48,4 +46,4 @@ class PVPWin implements DiscordNotification {
   }
 }
 
-export default new PVPWin();
+export default new AchievementDiary();

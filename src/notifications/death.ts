@@ -2,15 +2,15 @@ import { DiscordNotification, NOTIFICATION_TYPE, NotificationRequest } from '../
 import config from '../config';
 import { AttachmentBuilder, EmbedBuilder, GuildMember, MessageCreateOptions } from 'discord.js';
 
-class Quest implements DiscordNotification {
+class Death implements DiscordNotification {
   type: NOTIFICATION_TYPE;
   title: string;
   color: number;
 
   constructor() {
-    this.type = NOTIFICATION_TYPE.QUESTCOMPLETION;
-    this.title = 'Quest Completion';
-    this.color = config.visuals.blue;
+    this.type = NOTIFICATION_TYPE.DEATH;
+    this.title = 'Death';
+    this.color = config.visuals.red;
   }
 
   buildMessage(
@@ -23,13 +23,12 @@ class Quest implements DiscordNotification {
     const embed = new EmbedBuilder()
       .setTitle(this.title)
       .setAuthor({
-        name: data.rsn,
-        iconURL: `attachment://helm.jpg`,
-        url: `https://wiseoldman.net/players/${data.rsn}`
+        name: user.displayName,
+        iconURL: `attachment://helm.jpg`
       })
       .setColor(this.color)
       .setFields({ name: '\u200B', value: `<@${user.id}>` })
-      .setDescription(data.message)
+      .setDescription(data.content)
       .setTimestamp();
 
     if (screenshot) {
@@ -47,4 +46,4 @@ class Quest implements DiscordNotification {
   }
 }
 
-export default new Quest();
+export default new Death();

@@ -2,14 +2,14 @@ import { DiscordNotification, NOTIFICATION_TYPE, NotificationRequest } from '../
 import config from '../config';
 import { AttachmentBuilder, EmbedBuilder, GuildMember, MessageCreateOptions } from 'discord.js';
 
-class Drop implements DiscordNotification {
+class Slayer implements DiscordNotification {
   type: NOTIFICATION_TYPE;
   title: string;
   color: number;
 
   constructor() {
-    this.type = NOTIFICATION_TYPE.BOSSDROP;
-    this.title = 'Boss Drop';
+    this.type = NOTIFICATION_TYPE.SLAYER;
+    this.title = 'Slayer Task';
     this.color = config.visuals.gold;
   }
 
@@ -21,15 +21,14 @@ class Drop implements DiscordNotification {
     const files = [new AttachmentBuilder('static/img/helm.jpg')];
 
     const embed = new EmbedBuilder()
-      .setTitle(this.title)
+      .setTitle(`${this.title}`)
       .setAuthor({
-        name: data.rsn,
-        iconURL: `attachment://helm.jpg`,
-        url: `https://wiseoldman.net/players/${data.rsn}`
+        name: user.displayName,
+        iconURL: `attachment://helm.jpg`
       })
       .setColor(this.color)
       .setFields({ name: '\u200B', value: `<@${user.id}>` })
-      .setDescription(data.message)
+      .setDescription(data.content)
       .setTimestamp()
       .setFooter({ text: 'Legend' });
 
@@ -48,4 +47,4 @@ class Drop implements DiscordNotification {
   }
 }
 
-export default new Drop();
+export default new Slayer();
