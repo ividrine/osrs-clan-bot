@@ -1,4 +1,4 @@
-import { ChannelType, Client } from 'discord.js';
+import { AttachmentBuilder, ChannelType, Client, MessageCreateOptions } from 'discord.js';
 import { Request as JWTRequest } from 'express-jwt';
 import express from 'express';
 import { findOpenChannel } from '../models/discord';
@@ -49,17 +49,15 @@ export async function onNotification(
   const server = client.guilds.cache.get(req.auth?.guildId);
   const user = await server?.members.fetch(req.auth?.id);
 
-  if (!server || !user || !req.body.type || !req.body.content) {
+  if (!server || !user || !req.body.payload_json) {
     return res.sendStatus(400);
   }
 
-  const notification: DiscordNotification | undefined = notifications.find(x => {
-    return x.type == req.body.type;
-  });
+  const data = JSON.parse(req.body.payload_json);
 
-  if (!notification) return res.sendStatus(500);
+  if (!data.type) return res.sendStatus(400);
 
-  const pref = await getNotificationPreference(req.auth?.guildId, notification.type);
+  const pref = await getNotificationPreference(req.auth?.guildId, data.type);
 
   if (!pref?.channelId) return res.sendStatus(400);
 
@@ -67,9 +65,29 @@ export async function onNotification(
 
   if (!channel || channel.type != ChannelType.GuildText) return res.sendStatus(500);
 
-  const message = notification.buildMessage(user, req.body, req.file);
+  if (data.embeds) {
+    const message: MessageCreateOptions = {
+      embeds: data.embeds,
+      files: []
+    };
 
-  channel.send(message);
+    if (req.file) {
+      const attachment = new AttachmentBuilder(req.file.buffer, { name: req.file.originalname });
+      message.files?.push(attachment);
+    }
+
+    channel.send(message);
+  } else {
+    const notification: DiscordNotification | undefined = notifications.find(x => {
+      return x.type == data.type;
+    });
+
+    if (!notification) return res.sendStatus(400);
+
+    const message = notification.buildMessage(user, data, req.file);
+
+    channel.send(message);
+  }
 
   res.sendStatus(200);
 }
