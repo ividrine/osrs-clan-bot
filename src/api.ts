@@ -3,8 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import { expressjwt, Request as JWTRequest } from 'express-jwt';
 import config from './config';
-import { onNotification } from './notifications';
-import multer, { Multer } from 'multer';
+import { onNotification } from './models/notification';
+import multer from 'multer';
 import { getTokenByValue } from './services/prisma';
 
 const storage = multer.memoryStorage();
@@ -58,6 +58,7 @@ export function init(client: Client) {
       try {
         await onNotification(client, req, res);
       } catch (error) {
+        console.error(error);
         res.sendStatus(500);
       }
     }
